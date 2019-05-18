@@ -22,4 +22,8 @@ apt-get install fswebcam
 npm i
 ```
 
+```
+cp config.js.default config.js
+vim config.js
+```
 ## Live preview

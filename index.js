@@ -1,4 +1,4 @@
-const config = require('config');
+const config = require('./config');
 const mqtt = require('mqtt');
 const mqttClient  = mqtt.connect(config.mqtt.host, {username: config.mqtt.user, password: config.mqtt.password});
 
