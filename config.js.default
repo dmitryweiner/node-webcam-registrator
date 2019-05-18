@@ -1,6 +1,6 @@
 module.exports = {
   mqtt: {
-    host: 'mqtt://google.com',
+    host: 'tcp://google.com:1883',
     user: 'user',
     password: 'Passw0rd!',
   },
