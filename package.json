@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "async-mqtt": "^2.2.1",
     "bme280-sensor": "^0.1.6",
     "mqtt": "^2.18.8",
     "node-webcam": "^0.5.0"

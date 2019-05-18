@@ -1,7 +1,6 @@
 const config = require('./config');
-const mqtt = require('mqtt');
-const mqttClient  = mqtt.connect(config.mqtt.host, {username: config.mqtt.user, password: config.mqtt.password});
-
+const MQTT = require('async-mqtt');
+const mqttClient = MQTT.connect(config.mqtt.host, {username: config.mqtt.user, password: config.mqtt.password});
 
 const BME280 = require('bme280-sensor');
 const options = {
@@ -31,11 +30,12 @@ const webcamCapturePromise = new Promise((resolve, reject) => {
 });
 
 Promise.all([
+  // init things here
   bme280.init(),
   mqttInitPromise,
-
 ]).then(() => {
   return Promise.all([
+    //do main work here
     bme280.readSensorData(),
     webcamCapturePromise,
   ]);
@@ -64,6 +64,7 @@ Promise.all([
       value: results[1],
     },
   ]};
-  mqttClient.publish(`sensors/${config.sensorName}`, JSON.stringify(message));
+  return mqttClient.publish(`sensors/${config.sensorName}`, JSON.stringify(message))
+    .then(() => mqttClient.end());
 })
 .catch(error => console.warn(error)).then(() => process.exit(0));
