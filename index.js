@@ -1,5 +1,6 @@
+const config = require('config');
 const mqtt = require('mqtt');
-const mqttClient  = mqtt.connect('mqtt://test.mosquitto.org'); // TODO get url from config
+const mqttClient  = mqtt.connect(config.mqtt.host, {username: config.mqtt.user, password: config.mqtt.password});
 
 
 const BME280 = require('bme280-sensor');
@@ -39,7 +40,30 @@ Promise.all([
     webcamCapturePromise,
   ]);
 }).then((results) => {
-  console.log(results);
-  //mqttClient.publish(topic, message, [options], [callback]);
+  /**
+   * results = [{ temperature_C: 23.22,
+    humidity: 33.051875329622405,
+    pressure_hPa: 997.6586114131737 },
+   'data:image/jpeg;base64,...']
+   */
+  const message = {parameters: [
+    {
+      type: 'temperature',
+      value: results[0].temperature_C,
+    },
+    {
+      type: 'humidity',
+      value: results[0].humidity,
+    },
+    {
+      type: 'pressure',
+      value: results[0].pressure_hPa,
+    },
+    {
+      type: 'image',
+      value: results[1],
+    },
+  ]};
+  mqttClient.publish(`sensors/${config.sensorName}`, JSON.stringify(message));
 })
-.catch(error => console.warn(error));
+.catch(error => console.warn(error)).then(() => process.exit(0));

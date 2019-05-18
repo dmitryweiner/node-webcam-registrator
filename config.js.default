@@ -1,0 +1,8 @@
+export default {
+  mqtt: {
+    host: 'google.com',
+    user: 'user',
+    password: 'Passw0rd!',
+  },
+  sensorName: 'sensors/bme280',
+};
