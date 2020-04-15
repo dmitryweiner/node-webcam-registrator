@@ -12,7 +12,8 @@ const bme280 = new BME280(options);
 
 const NodeWebcam = require('node-webcam');
 const opts = {
-  callbackReturn: "base64"
+  callbackReturn: "base64",
+  skip: 30
 };
 const Webcam = NodeWebcam.create(opts);
 
